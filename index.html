@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generador de Prompt</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
+        }
+        .logo {
+            width: 100px;
+            margin-bottom: 20px;
+        }
+        .container h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #333;
+            text-align: center;
+        }
+        .input-group {
+            margin-bottom: 15px;
+            text-align: left;
+        }
+        .input-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #555;
+            font-weight: bold;
+        }
+        .input-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+        .buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+        .button {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .button:hover {
+            background-color: #0056b3;
+        }
+        .copy-button {
+            display: none;
+            background-color: #28a745;
+        }
+        .copy-button:hover {
+            background-color: #218838;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #e9ecef;
+            border: 1px solid #ced4da;
+            border-radius: 5px;
+            font-size: 14px;
+            word-wrap: break-word;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <img src="ruta-a-tu-logo.png" alt="Logo" class="logo">
+        <h1>Generador de Prompt</h1>
+        <div class="input-group">
+            <label for="role">Actúa como un...</label>
+            <input type="text" id="role">
+        </div>
+        <div class="input-group">
+            <label for="expert">Especialista en...</label>
+            <input type="text" id="expert">
+        </div>
+        <div class="input-group">
+            <label for="task">Tu tarea es...</label>
+            <input type="text" id="task">
+        </div>
+        <div class="input-group">
+            <label for="context">Contexto/Condiciones:</label>
+            <input type="text" id="context">
+        </div>
+        
+        <div class="input-group">
+            <label for="formato">Formato de respuesta:</label>
+            <select id="formato">
+                <option value="Dialogo">Dialogo</option>
+                <option value="Viñetas">Viñetas</option>
+                <option value="Informe">Informe</option>
+                <option value="Ensayo">Ensayo</option>
+                <option value="Narracion">Narracion</option>
+                <option value="Entrevista">Entrevista</option>
+                <option value="Analisis">Analisis</option>
+                <option value="Resumen">Resumen</option>
+                <!-- Agrega más opciones según sea necesario -->
+            </select>
+        </div>
+
+        <div class="input-group">
+            <label for="estilo">Estilo:</label>
+            <select id="estilo">
+                <option value="Formal">Formal</option>
+                <option value="Informal">Informal</option>
+                <option value="Tecnico">Tecnico</option>
+                <option value="Cientifico">Cientifico</option>
+                <option value="Coloquial">Coloquial</option>
+                <option value="Periodistico">Periodistico</option>
+                <option value="Academico">Academico</option>
+                <option value="Comercial">Comercial</option>
+                <option value="Literario">Literario</option>
+                <!-- Agrega más opciones según sea necesario -->
+            </select>
+        </div>
+
+        <div class="input-group">
+            <label for="tono">Tono:</label>
+            <select id="tono">
+                <option value="Casual">Casual</option>
+                <option value="Serio">Serio</option>
+                <option value="Empatico">Empatico</option>
+                <option value="Amigable">Amigable</option>
+                <option value="Objetivo">Objetivo</option>
+                <option value="Crítico">Crítico</option>
+                <option value="Neutral">Neutral</option>
+                <option value="Humoristico">Humoristico</option>
+                <option value="Persuasivo">Persuasivo</option>
+                <!-- Agrega más opciones según sea necesario -->
+            </select>
+        </div>
+
+       
+        <div class="buttons">
+            <button class="button" onclick="generatePrompt()">Generar Prompt</button>
+            <button class="button copy-button" id="copyButton" onclick="copyToClipboard()">Copiar Prompt</button>
+        </div>
+        <div class="result" id="result"></div>
+    </div>
+
+    <script>
+        function generatePrompt() {
+            const role = document.getElementById('role').value;
+            const expert = document.getElementById('expert').value;
+            const task = document.getElementById('task').value;
+            const context = document.getElementById('context').value;
+            const formato = document.getElementById('formato').value;
+            const estilo = document.getElementById('estilo').value;
+            const tono = document.getElementById('tono').value;
+           
+
+            const prompt = `Actua com un ${role} especialista en ${expert}. Tu tarea es la siguiente: ${task}. Para cumplir tu objetivo deberás considerar el siguiente contexto: ${context}. Utiliza una redacción ${estilo} en un tono ${tono}. Presenta tu respuesta en formato de ${formato}.`;
+            document.getElementById('result').textContent = prompt;
+
+            const copyButton = document.getElementById('copyButton');
+            copyButton.style.display = 'inline-block'; // Mostrar el botón de copiar
+        }
+
+        function copyToClipboard() {
+            const resultDiv = document.getElementById('result');
+            const text = resultDiv.textContent;
+
+            navigator.clipboard.writeText(text).then(() => {
+                alert('Prompt copiado al portapapeles!');
+            }).catch(err => {
+                alert('Error al copiar el prompt: ', err);
+            });
+        }
+    </script>
+</body>
+</html>
